@@ -7,7 +7,7 @@ namespace FilesUploaderApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UploadController(IRepository repository, IMessaging messaging) : ControllerBase
+public class UploadController(IRepository repository, IMessenger messenger) : ControllerBase
 {
     private readonly string _storagePath = Path.Combine(Directory.GetCurrentDirectory(), "UploadedFiles");
     
@@ -29,7 +29,7 @@ public class UploadController(IRepository repository, IMessaging messaging) : Co
 
         if (customerSession is { UploadCompleted: true, MessageSent: false })
         {
-            messaging.Send($"Required files successfully uploaded for customer session ID '{customerSessionId}'");
+            messenger.Send($"Required files successfully uploaded for customer session ID '{customerSessionId}'");
             customerSession.MessageSent = true;
         }
 

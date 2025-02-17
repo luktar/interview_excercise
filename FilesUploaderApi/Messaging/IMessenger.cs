@@ -1,6 +1,6 @@
 namespace FilesUploaderApi.Messaging;
 
-public interface IMessaging
+public interface IMessenger
 {
     public bool Send(string message);
 }

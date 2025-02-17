@@ -65,9 +65,11 @@ Use POST method `api/Upload/{customerSessionId}`, insert `customer_session_6` as
 You can see in console the information that message has been sent:
 
 ```
-filesuploaderapi-1  | Sending email:
+filesuploaderapi-1  | Sending console message:
 filesuploaderapi-1  | Required files successfully uploaded for customer session ID 'customer_session_6'
 ```
+
+The message will be send and `UploadCompleted` will change to true only if all required files will be uploaded: `File1.pdf`, `File2.pdf` and `File3.pdf`.
 
 ### Check session status
 
