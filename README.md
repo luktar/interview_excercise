@@ -77,7 +77,11 @@ Use POST method `api/Upload/{customerSessionId}` with `customer_session_6` as qu
 
 # Limitations
 
-Mocked database is integrated with the process (in memory) and it's breaking the idea behind microservices. 
+- Mocked database is integrated with the process (in memory) and it's breaking the idea behind microservices
+- The messaging has been limited to sending a console message
+- Only one microservice has been implemented. The messaging system could have been implemented as a second one but then it would be worth to add decoupling with RabbitMQ and it would take too much time as for interview exercise
+
+# Improvements for the future
 
 This project can be improved by:
 
