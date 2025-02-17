@@ -23,9 +23,50 @@ Business user can have multiple customers assigned.
 
 # How to use the project
 
+### Build and run
+
+Use following commands on the root level of the project:
+
+```
+docker compose build
+docker compose up
+```
+
+The webpage will be available at `http://localhost:8080/swagger/index.html`.
+
 ### Create new session
 
+Create new session `customer_session_6` for user `user_1` by using POST method in `api\CustomerSession` controller.
 
+```
+{
+  "customerSessionId": "user_1",
+  "businessUserName": "customer_session_6"
+}
+```
+
+### Upload files
+
+Create 3 files on your drive: File1.pdf, File2.pdf and File3.pdf.
+
+Use POST method `api/Upload/{customerSessionId}`, insert `customer_session_6` as a session id and upload `File1.pdf` file only.
+
+Check session status by using GET method in `api/CustomerSession` controller. Use `customer_session_6` to check the relevant data.
+
+### Upload required files and send the message
+
+Use POST method `api/Upload/{customerSessionId}`, insert `customer_session_6` as a session id and upload 2 remaining files: `File2.pdf` and `File3.pdf`.
+
+You can see in console the information that message has been sent:
+
+```
+filesuploaderapi-1  | Sending email:
+filesuploaderapi-1  | Required files successfully uploaded for customer session ID 'customer_session_6'
+```
+
+### Check session status
+
+Use GET method in `api/CustomerSession` controller. Use `customer_session_6` to check the relevant data.
 
 # Limitations
 
@@ -42,3 +83,4 @@ This model can be improved by:
 - global exception handling
 - save files in remote drive e.g. S3
 - use K8s instead of docker-compose
+- swagger should be available only in the development mode
