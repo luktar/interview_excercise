@@ -10,9 +10,6 @@ namespace FilesUploaderApi.Controllers;
 public class UploadController(IRepository repository, IMessaging messaging) : ControllerBase
 {
     private readonly string _storagePath = Path.Combine(Directory.GetCurrentDirectory(), "UploadedFiles");
-
-    [HttpGet]
-    public IActionResult Get() => Ok("UploadController is working!");
     
     [HttpPost("{customerSessionId}")]
     public async Task<IActionResult> UploadFiles(

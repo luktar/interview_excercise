@@ -9,6 +9,7 @@ Some requirements were missing. I've added them as follow:
 
 Mock database has been filled with following data:
 
+```
 - user_1
   - customer_session_1
   - customer_session_2
@@ -16,10 +17,11 @@ Mock database has been filled with following data:
 - user_2
   - customer_session_4
   - customer_session_5
+```
 
 Business user can have multiple customers assigned.
-- user_x - represents business user
-- customer_session_x - represents customer's account / session
+- `user_x` - represents business user
+- `customer_session_x` - represents customer's account / session
 
 # How to use the project
 
@@ -38,6 +40,8 @@ The webpage will be available at `http://localhost:8080/swagger/index.html`.
 
 Create new session `customer_session_6` for user `user_1` by using POST method in `api\CustomerSession` controller.
 
+Body:
+
 ```
 {
   "customerSessionId": "user_1",
@@ -47,11 +51,12 @@ Create new session `customer_session_6` for user `user_1` by using POST method i
 
 ### Upload files
 
-Create 3 files on your drive: File1.pdf, File2.pdf and File3.pdf.
+Create 3 files on your drive: `File1.pdf`, `File2.pdf` and `File3.pdf`.
 
-Use POST method `api/Upload/{customerSessionId}`, insert `customer_session_6` as a session id and upload `File1.pdf` file only.
+Use POST method `api/Upload/{customerSessionId}`, insert `customer_session_6` as a session id and upload `File1.pdf` only.
 
-Check session status by using GET method in `api/CustomerSession` controller. Use `customer_session_6` to check the relevant data.
+Optional:
+Check session status by using GET method `api/CustomerSession/{customerSessionId}`. Use `customer_session_6` to check the relevant data.
 
 ### Upload required files and send the message
 
@@ -66,13 +71,13 @@ filesuploaderapi-1  | Required files successfully uploaded for customer session 
 
 ### Check session status
 
-Use GET method in `api/CustomerSession` controller. Use `customer_session_6` to check the relevant data.
+Use POST method `api/Upload/{customerSessionId}` with `customer_session_6` as query param to check the relevant data.
 
 # Limitations
 
 Mocked database is integrated with the process (in memory) and it's breaking the idea behind microservices. 
 
-This model can be improved by:
+This project can be improved by:
 
 - adding SQL / NoSQL database
 - adding DTO + Automapper instead returning entities directly from the repository / database
