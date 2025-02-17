@@ -12,21 +12,26 @@ public class CustomerSession(IRepository repository) : ControllerBase
     public IActionResult GetSessionState([FromRoute] string customerSessionId)
     {
         if (!repository.CustomerSessionExists(customerSessionId))
-            return NotFound($"Customer session with ID {customerSessionId} not found.");
+            return NotFound($"Customer session with ID '{customerSessionId}' not found.");
 
         var session = repository.GetCustomerSession(customerSessionId);
 
-        return Ok(session);
+        return Ok(new CustomerSessionModel
+        {
+            Id = session.Id,
+            UploadCompleted = session.UploadCompleted,
+            Files = session.Files
+        });
     }
 
     [HttpPost]
     public IActionResult CreateSession([FromBody] NewSessionModel newSession)
     {
         if (!repository.BusinessUserExists(newSession.BusinessUserName))
-            return NotFound($"User with ID {newSession.BusinessUserName} not found.");
+            return NotFound($"User with ID '{newSession.BusinessUserName}' not found.");
 
         if (repository.CustomerSessionExists(newSession.CustomerSessionId))
-            return BadRequest($"Customer session with ID {newSession.CustomerSessionId} already exists.");
+            return BadRequest($"Customer session with ID '{newSession.CustomerSessionId}' already exists.");
 
         var entity =
             repository.AddCustomerSession(newSession.BusinessUserName, newSession.CustomerSessionId);
@@ -40,7 +45,7 @@ public class CustomerSession(IRepository repository) : ControllerBase
         
         return Ok(new
         {
-            Message = $"Session {newSession.CustomerSessionId} successfully created!",
+            Message = $"Session '{newSession.CustomerSessionId}' successfully created!",
             Session = model
         });
     }

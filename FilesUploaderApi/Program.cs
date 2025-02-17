@@ -1,9 +1,11 @@
+using FilesUploaderApi.Messaging;
 using FilesUploaderApi.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddSingleton<IRepository, MockRepository>();
+builder.Services.AddTransient<IMessaging, Email>();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();

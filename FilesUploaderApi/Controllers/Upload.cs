@@ -1,3 +1,5 @@
+using FilesUploaderApi.Messaging;
+using FilesUploaderApi.Models;
 using FilesUploaderApi.Repository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -5,7 +7,7 @@ namespace FilesUploaderApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UploadController(IRepository repository) : ControllerBase
+public class UploadController(IRepository repository, IMessaging messaging) : ControllerBase
 {
     private readonly string _storagePath = Path.Combine(Directory.GetCurrentDirectory(), "UploadedFiles");
 
@@ -18,7 +20,7 @@ public class UploadController(IRepository repository) : ControllerBase
         [FromForm] IFormFile[]? files)
     {
         if(!repository.CustomerSessionExists(customerSessionId))
-            return NotFound($"Customer session with ID {customerSessionId} not found.");
+            return NotFound($"Customer session with ID '{customerSessionId}' not found.");
         
         if (files == null || files.Length == 0)
             return BadRequest("No files uploaded.");
@@ -30,14 +32,19 @@ public class UploadController(IRepository repository) : ControllerBase
 
         if (customerSession is { UploadCompleted: true, MessageSent: false })
         {
-            // Send message
+            messaging.Send($"Required files successfully uploaded for customer session ID '{customerSessionId}'");
             customerSession.MessageSent = true;
         }
 
         return Ok(new
         {
             Message = "Files uploaded successfully!",
-            CustomerSession = customerSession
+            CustomerSession = new CustomerSessionModel
+            {
+                Id = customerSessionId,
+                Files = customerSession.Files,
+                UploadCompleted = customerSession.UploadCompleted
+            }
         });
     }
 
@@ -48,7 +55,7 @@ public class UploadController(IRepository repository) : ControllerBase
     
     private async Task SaveFiles(IFormFile[] files, string customerSessionId)
     {
-        string customerDirectory = Path.Combine(_storagePath, customerSessionId);
+        string customerDirectory = Path.Combine(_storagePath, $"{customerSessionId}/");
         if (!Directory.Exists(customerDirectory))
         {
             Directory.CreateDirectory(customerDirectory);
@@ -56,7 +63,7 @@ public class UploadController(IRepository repository) : ControllerBase
         
         foreach (var file in files)
         {
-            var filePath = Path.Combine(customerDirectory, customerSessionId, file.FileName);
+            var filePath = Path.Combine(customerDirectory, file.FileName);
             await using var fileStream = new FileStream(filePath, FileMode.Create);
             await file.CopyToAsync(fileStream);
         }

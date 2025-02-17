@@ -58,6 +58,7 @@ public class MockRepository : IRepository
         var session = new CustomerSessionEntity { Id = sessionId };
         Users.First(x => x.Name == userName).CustomerSessions.Add(
             session);
+        Sessions.Add(session);
         return session;
     }
 
