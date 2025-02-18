@@ -38,7 +38,7 @@ The webpage will be available at `http://localhost:8080/swagger/index.html`.
 
 ### Create new session
 
-Create new session `customer_session_6` for user `user_1` by using POST method in `api\CustomerSession` controller.
+Create new session `customer_session_6` for user `user_1` by using POST method in `api/CustomerSession` controller.
 
 Body:
 
@@ -89,7 +89,7 @@ This project can be improved by:
 - adding DTO + Automapper instead returning entities directly from the repository / database
 - JWT / OAuth authorization for business users
 - Messaging can be done by separated service with the RabbitMQ queue in between or directly by SNS
-- logging should be done by Log4Net or NLog + Centry / DataDog / CloudWatch
+- logging should be done by Log4Net or NLog + Sentry / DataDog / CloudWatch
 - validation for API models
 - global exception handling
 - save files in remote drive e.g. S3
