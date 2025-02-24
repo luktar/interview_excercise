@@ -1,26 +1,22 @@
 using FilesUploaderApi.Messaging;
 using FilesUploaderApi.Models;
 using FilesUploaderApi.Repository;
-using Microsoft.AspNetCore.Mvc;
+using KeyNotFoundException = System.Collections.Generic.KeyNotFoundException;
 
-namespace FilesUploaderApi.Controllers;
+namespace FilesUploaderApi.Services;
 
-[ApiController]
-[Route("api/[controller]")]
-public class UploadController(IRepository repository, IMessenger messenger) : ControllerBase
+public class UploadService(IRepository repository, IMessenger messenger) : IUploadService
 {
     private readonly string _storagePath = Path.Combine(Directory.GetCurrentDirectory(), "UploadedFiles");
+
     
-    [HttpPost("{customerSessionId}")]
-    public async Task<IActionResult> UploadFiles(
-        [FromRoute] string customerSessionId, 
-        [FromForm] IFormFile[]? files)
+    public async Task<CustomerSessionModel> UploadFilesAsync(string customerSessionId, IFormFile[]? files)
     {
         if(!repository.CustomerSessionExists(customerSessionId))
-            return NotFound($"Customer session with ID '{customerSessionId}' not found.");
+            throw new KeyNotFoundException($"Customer session with ID '{customerSessionId}' not found.");
         
         if (files == null || files.Length == 0)
-            return BadRequest("No files uploaded.");
+            throw new ArgumentException("No files uploaded.");
 
         var customerSession = repository.GetCustomerSession(customerSessionId);
 
@@ -33,18 +29,14 @@ public class UploadController(IRepository repository, IMessenger messenger) : Co
             customerSession.MessageSent = true;
         }
 
-        return Ok(new
-        {
-            Message = "Files uploaded successfully!",
-            CustomerSession = new CustomerSessionModel
+        return new CustomerSessionModel
             {
                 Id = customerSessionId,
                 Files = customerSession.Files,
                 UploadCompleted = customerSession.UploadCompleted
-            }
-        });
+            };
     }
-
+    
     private static void UpdateCustomerSession(IFormFile[] files, CustomerSessionEntity customerSession)
     {
         customerSession.Files.AddRange(files.Select(x => x.FileName));
