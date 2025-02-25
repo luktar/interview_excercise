@@ -143,6 +143,26 @@
 			"request": {
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "files",
+							"type": "file",
+							"src": "File1.pdf"
+						},
+						{
+							"key": "files",
+							"type": "file",
+							"src": "File2.pdf"
+						},
+						{
+							"key": "files",
+							"type": "file",
+							"src": "File3.pdf"
+						}
+					]
+				},
 				"url": {
 					"raw": "{{host}}/api/users/user_1/customerSessions/customer_session_1/uploads",
 					"host": [
