@@ -10,15 +10,12 @@ public class UploadService(IRepository repository, IMessenger messenger) : IUplo
     private readonly string _storagePath = Path.Combine(Directory.GetCurrentDirectory(), "UploadedFiles");
 
     
-    public async Task<CustomerSessionModel> UploadFilesAsync(string customerSessionId, IFormFile[]? files)
+    public async Task<CustomerSessionModel> UploadFilesAsync(string userId, string customerSessionId, IFormFile[]? files)
     {
-        if(!repository.CustomerSessionExists(customerSessionId))
-            throw new KeyNotFoundException($"Customer session with ID '{customerSessionId}' not found.");
-        
         if (files == null || files.Length == 0)
             throw new ArgumentException("No files uploaded.");
 
-        var customerSession = repository.GetCustomerSession(customerSessionId);
+        var customerSession = repository.GetCustomerSession(userId, customerSessionId);
 
         await SaveFiles(files, customerSessionId);
         UpdateCustomerSession(files, customerSession);

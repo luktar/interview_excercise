@@ -4,5 +4,5 @@ namespace FilesUploaderApi.Services;
 
 public interface IUploadService
 {
-    Task<CustomerSessionModel> UploadFilesAsync(string customerSessionId, IFormFile[]? files);
+    Task<CustomerSessionModel> UploadFilesAsync(string userId, string customerSessionId, IFormFile[]? files);
 }

@@ -4,6 +4,6 @@ namespace FilesUploaderApi.Services;
 
 public interface ICustomerSessionService
 {
-    CustomerSessionModel GetSessionState(string customerSessionId);
-    CustomerSessionModel CreateSession(NewSessionModel newSession);
+    CustomerSessionModel GetSessionState(string userId, string customerSessionId);
+    CustomerSessionModel CreateSession(string userId, string customerSessionId);
 }

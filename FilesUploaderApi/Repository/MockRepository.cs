@@ -1,65 +1,28 @@
-using System.Security.Cryptography;
-using Microsoft.IdentityModel.Tokens;
-
 namespace FilesUploaderApi.Repository;
 
 public class MockRepository : IRepository
 {
-    public HashSet<CustomerSessionEntity> Sessions { get; }
+    private HashSet<BusinessUserEntity> Users { get; } = [];
 
-    public HashSet<BusinessUserEntity> Users { get; } =
-    [
-        new BusinessUserEntity
-        {
-            Name = "user_1", 
-            CustomerSessions = [
-                new CustomerSessionEntity
-                {
-                    Id = "customer_session_1"
-                },
-                new CustomerSessionEntity
-                {
-                    Id = "customer_session_2"
-                },
-                new CustomerSessionEntity
-                {
-                    Id = "customer_session_3"
-                }
-            ]
-        },
-        new BusinessUserEntity
-        {
-            Name = "user_2", 
-            CustomerSessions = [
-                new CustomerSessionEntity
-                {
-                    Id = "customer_session_4"
-                },
-                new CustomerSessionEntity
-                {
-                    Id = "customer_session_5"
-                }
-            ]
-        }
-    ];
-
-    public MockRepository()
+    public CustomerSessionEntity AddCustomerSession(string userId, string sessionId)
     {
-        Sessions = Users.SelectMany(u => u.CustomerSessions).ToHashSet();
-    }
-
-    public bool CustomerSessionExists(string sessionId)
-    {
-        return Sessions.Any(x => x.Id == sessionId);
-    }
-    
-    public CustomerSessionEntity AddCustomerSession(string userName, string sessionId)
-    {
-        var session = new CustomerSessionEntity { Id = sessionId };
-        Users.First(x => x.Name == userName).CustomerSessions.Add(
-            session);
-        Sessions.Add(session);
-        return session;
+        var user = Users.FirstOrDefault(u => u.Name == userId);
+        
+        if(user == null)
+            throw new KeyNotFoundException($"User with id {userId} not found");
+        
+        var session = Users.First(x => x.Name == userId).
+            CustomerSessions.FirstOrDefault(x => x.Id == sessionId);
+        
+        if(session != null)
+            throw new KeyNotFoundException($"CustomerSession with id {sessionId} already exists");
+        
+        var newSession = new CustomerSessionEntity { Id = sessionId };
+        
+        Users.First(x => x.Name == userId).CustomerSessions.Add(
+            newSession);
+        
+        return newSession;
     }
 
     public bool BusinessUserExists(string userName)
@@ -67,21 +30,34 @@ public class MockRepository : IRepository
         return Users.Any(u => u.Name == userName);
     }
 
-    public CustomerSessionEntity GetCustomerSession(string sessionId)
+    public CustomerSessionEntity GetCustomerSession(string userId, string sessionId)
     {
-        return Sessions.First(x => x.Id == sessionId);
+        var user = Users.FirstOrDefault(u => u.Name == userId);
+        
+        if(user == null)
+            throw new KeyNotFoundException($"User with id {userId} not found");
+
+        var session = user.CustomerSessions.FirstOrDefault(x => x.Id == sessionId);
+        
+        if(session == null)
+            throw new KeyNotFoundException($"CustomerSession with id {sessionId} not found");
+
+        return session;
     }
 
-    public async Task<string> AddBusinessUserAsync(string userName)
+    public async Task<string> AddBusinessUserAsync(string userId)
     {
         await Task.Run(() =>
         {
+            if(BusinessUserExists(userId))
+                throw new InvalidOperationException($"User with id {userId} already exists");
+            
             Users.Add(new BusinessUserEntity
             {
-                Name = userName
+                Name = userId
             });
         });
 
-        return userName;
+        return userId;
     }
 }

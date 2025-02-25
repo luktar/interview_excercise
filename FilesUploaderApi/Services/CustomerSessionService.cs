@@ -5,12 +5,9 @@ namespace FilesUploaderApi.Services;
 
 public class CustomerSessionService(IRepository repository) : ICustomerSessionService
 {
-    public CustomerSessionModel GetSessionState(string customerSessionId)
+    public CustomerSessionModel GetSessionState(string userId, string customerSessionId)
     {
-        if (!repository.CustomerSessionExists(customerSessionId))
-            throw new KeyNotFoundException($"Customer session with ID '{customerSessionId}' not found.");
-
-        var session = repository.GetCustomerSession(customerSessionId);
+        var session = repository.GetCustomerSession(userId, customerSessionId);
 
         return new CustomerSessionModel
         {
@@ -20,16 +17,10 @@ public class CustomerSessionService(IRepository repository) : ICustomerSessionSe
         };
     }
 
-    public CustomerSessionModel CreateSession(NewSessionModel newSession)
+    public CustomerSessionModel CreateSession(string userId, string customerSessionId)
     {
-        if (!repository.BusinessUserExists(newSession.BusinessUserName))
-            throw new KeyNotFoundException($"User with ID '{newSession.BusinessUserName}' not found.");
-
-        if (repository.CustomerSessionExists(newSession.CustomerSessionId))
-            throw new InvalidOperationException($"Customer session with ID '{newSession.CustomerSessionId}' already exists.");
-
         var entity =
-            repository.AddCustomerSession(newSession.BusinessUserName, newSession.CustomerSessionId);
+            repository.AddCustomerSession(userId, customerSessionId);
         
         return new CustomerSessionModel
         {

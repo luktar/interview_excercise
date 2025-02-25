@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace FilesUploaderApi.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
-public class BusinessUsersController(IUsersService service) : ControllerBase
+[Route("api/users")]
+public class UsersController(IUsersService service) : ControllerBase
 {
     [HttpPost]
     public async Task<IActionResult> PostAsync([FromBody] NewBusinessUserModel userModel)
@@ -14,7 +14,7 @@ public class BusinessUsersController(IUsersService service) : ControllerBase
         return Ok(new
         {
             Message = "User created successfully!",
-            BusinessUserId = await service.AddUserAsync(userModel)
+            UserId = await service.AddUserAsync(userModel)
         });
     }
 }
