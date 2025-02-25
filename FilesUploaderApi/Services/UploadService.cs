@@ -39,7 +39,14 @@ public class UploadService(IRepository repository, IMessenger messenger) : IUplo
     
     private static void UpdateCustomerSession(IFormFile[] files, CustomerSessionEntity customerSession)
     {
-        customerSession.Files.AddRange(files.Select(x => x.FileName));
+        var existingFiles = new HashSet<string>(customerSession.Files);
+
+        foreach (var file in files)
+        {
+            if (existingFiles.Contains(file.FileName)) continue;
+            customerSession.Files.Add(file.FileName);
+            existingFiles.Add(file.FileName);
+        }
     }
     
     private async Task SaveFiles(IFormFile[] files, string customerSessionId)

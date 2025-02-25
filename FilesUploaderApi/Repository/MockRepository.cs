@@ -71,4 +71,17 @@ public class MockRepository : IRepository
     {
         return Sessions.First(x => x.Id == sessionId);
     }
+
+    public async Task<string> AddBusinessUserAsync(string userName)
+    {
+        await Task.Run(() =>
+        {
+            Users.Add(new BusinessUserEntity
+            {
+                Name = userName
+            });
+        });
+
+        return userName;
+    }
 }

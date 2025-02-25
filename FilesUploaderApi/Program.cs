@@ -10,6 +10,7 @@ builder.Services.AddSingleton<IRepository, MockRepository>();
 builder.Services.AddTransient<IMessenger, ConsoleMessenger>();
 builder.Services.AddScoped<IUploadService, UploadService>();
 builder.Services.AddScoped<ICustomerSessionService, CustomerSessionService>();
+builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();

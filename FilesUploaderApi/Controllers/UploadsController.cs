@@ -1,6 +1,3 @@
-using FilesUploaderApi.Messaging;
-using FilesUploaderApi.Models;
-using FilesUploaderApi.Repository;
 using FilesUploaderApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,11 +5,10 @@ namespace FilesUploaderApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UploadController(IUploadService service) : ControllerBase
+public class UploadsController(IUploadService service) : ControllerBase
 {
-
     [HttpPost("{customerSessionId}")]
-    public async Task<IActionResult> UploadFiles(
+    public async Task<IActionResult> UploadFilesAsync(
         [FromRoute] string customerSessionId, 
         [FromForm] IFormFile[]? files)
     {

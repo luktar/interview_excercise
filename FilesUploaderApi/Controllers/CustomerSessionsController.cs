@@ -6,7 +6,7 @@ namespace FilesUploaderApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class CustomerSessionController(ICustomerSessionService service) : ControllerBase
+public class CustomerSessionsController(ICustomerSessionService service) : ControllerBase
 {
     [HttpGet("{customerSessionId}")]
     public IActionResult GetSessionState([FromRoute] string customerSessionId)
