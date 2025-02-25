@@ -9,7 +9,7 @@ namespace FilesUploaderApi.Controllers;
 public class UsersController(IUsersService service) : ControllerBase
 {
     [HttpPost]
-    public async Task<IActionResult> PostAsync([FromBody] NewBusinessUserModel userModel)
+    public async Task<IActionResult> AddUserAsync([FromBody] NewBusinessUserModel userModel)
     {
         return Ok(new
         {

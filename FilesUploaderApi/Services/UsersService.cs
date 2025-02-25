@@ -8,15 +8,10 @@ public class UsersService(IRepository repository) : IUsersService
 {
     public Task<string> AddUserAsync(NewBusinessUserModel userModel)
     {
-        if(repository.BusinessUserExists(userModel.UserName))
+        if (repository.BusinessUserExists(userModel.UserName))
             throw new ArgumentException($"User with name {userModel.UserName} already exists");
+        
+        return repository.AddBusinessUserAsync(userModel.UserName);
 
-        try
-        {
-            return repository.AddBusinessUserAsync(userModel.UserName);
-        } catch(Exception e)
-        {
-            throw new InvalidOperationException($"Unable to create user with name {userModel.UserName}.");
-        }
     }
 }
