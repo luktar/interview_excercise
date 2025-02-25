@@ -1,0 +1,164 @@
+{
+	"info": {
+		"_postman_id": "fa885c28-b3f2-4381-b544-18a4423e46ad",
+		"name": "Asuro",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "713308"
+	},
+	"item": [
+		{
+			"name": "AddUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userName\": \"user_1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/users",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddCustomerSession",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customerSessionId\": \"customer_session_1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/users/user_1/customerSessions/",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"user_1",
+						"customerSessions",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetCustomerSession",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/users/user_1/customerSessions/customer_session_1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"user_1",
+						"customerSessions",
+						"customer_session_1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Uploads - no files",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/users/user_1/customerSessions/customer_session_1/uploads",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"user_1",
+						"customerSessions",
+						"customer_session_1",
+						"uploads"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload - File1.pdf",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "files",
+							"type": "file",
+							"src": "File1.pdf"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/api/users/user_1/customerSessions/customer_session_1/uploads",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"user_1",
+						"customerSessions",
+						"customer_session_1",
+						"uploads"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload - all files",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/users/user_1/customerSessions/customer_session_1/uploads",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"user_1",
+						"customerSessions",
+						"customer_session_1",
+						"uploads"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
